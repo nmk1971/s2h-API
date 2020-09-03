@@ -31,6 +31,11 @@ const UserSchema = new Schema({
         trim: true,
         required: [true, 'password is required']
     },
+    gender:{
+        type: String, 
+        required:true, 
+        default:'Homme'
+    },
     phone: {
         type: String,
     },
