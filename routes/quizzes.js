@@ -3,7 +3,7 @@ const router = express.Router();
 const QuizSchema = require('../db/models/quiz-schema');
 const helpers = require('../helpers/user-validation');
 const QuizService = require('../services/quiz.service')(QuizSchema);
-// TODO: Implement Quiz Schema and API
+
 
 // @ts-check
 // Add a new Quiz

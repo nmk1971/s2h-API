@@ -29,7 +29,7 @@ const QuizSchema = new Schema({
     cover: {
         required:false,
         type: String,
-        delfault: ''
+        delfault: 'assets/quiz.jpg'
     },
     creator: {
         type: Schema.Types.ObjectId,
