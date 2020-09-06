@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const User = require('./user-schema');
+const Question = require('./question-schema');
 const { boolean } = require("joi");
 
 
@@ -8,7 +9,7 @@ const { boolean } = require("joi");
 const QuizSchema = new Schema({
     title: {
         type: String,
-        required: [true, 'Le titre du quiez est obligatoire'],
+        required: [true, 'Le titre du quiz est obligatoire'],
         trim: true
     },
     theme:{
@@ -40,7 +41,8 @@ const QuizSchema = new Schema({
         required:true,
         type: Boolean,
         delfault: false
-    }
+    },
+    questions:[{type:Schema.Types.ObjectId,ref:'Question'}]
 
 }, {
     timestamps: true

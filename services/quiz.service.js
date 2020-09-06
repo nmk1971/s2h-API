@@ -24,7 +24,7 @@ const getAllQuizzes = Quiz => async () => {
         let quizzes = await Quiz.find({})
             .populate({
                 path: 'creator'
-            });
+            }).populate({path:'questions'});
 
         if (quizzes) {
             return ({
