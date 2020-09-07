@@ -1,1 +1,0 @@
-//TODO: implement getArticleById integration test

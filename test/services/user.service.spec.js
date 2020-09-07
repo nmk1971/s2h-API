@@ -8,7 +8,6 @@ const ObjectId = require('mongoose').Types.ObjectId;
 //connect to the files we are testing
 const db = require('../../db/index');
 const UserModel = require('../../db/models/user-schema');
-const CustomerModel = require('../../db/models/customer-schema');
 const UserService = require('../../services/user-service')(UserModel);
 const ROLES = require('../../helpers/user-validation').roles;
 

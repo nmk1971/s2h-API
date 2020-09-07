@@ -1,1 +1,0 @@
-//TODO: Implement Test for Gallery Service

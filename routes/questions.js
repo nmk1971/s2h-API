@@ -13,7 +13,7 @@ router.post('/add', helpers.validateUser, async function (req, res, next) {
         ...question
     } = req.body;
     try {
-        let response = await QuestionService.addQuestion(question);
+        let response = await QuestionService.addQuestion(QuizSchema)(question);
         res.json(response);
     } catch (error) {
         next(error);
@@ -41,7 +41,7 @@ router.get('/:id', helpers.validateUser,  async function (req, res, next) {
 router.get('/creator/:userId', helpers.validateUser, async function (req, res, next) {
     let creator = req.params.userId;
     try {
-        let response = await QuestionService(QuizSchema).getQuestionsByCreator(creator);
+        let response = await QuestionService.getQuestionsByCreator(QuizSchema)(creator);
         if (response) {
             res.json(response)
         }
@@ -51,16 +51,16 @@ router.get('/creator/:userId', helpers.validateUser, async function (req, res, n
 });
 
 
-// Update a given Quiz
-/*
+// Update a given Question
+
 router.put('/update/:id', helpers.validateUser, async function (req, res, next) {
-    let quizId = req.params.id;
-    let quiz = {
+    let questionId = req.params.id;
+    let question = {
       ...req.body
     };
   
     try {
-      let response = await QuizService.updateQuiz(quizId,quiz);
+      let response = await QuestionService.updateQuestion(questionId,question);
       if (response) {
         res.json(response);
       }
@@ -72,9 +72,9 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
 
   // remove a quiz
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
-    let quizId = req.params.id;
+    let questionId = req.params.id;
     try {
-      let response = await QuizService.removeQuiz(quizId,req.body.logged.userid);
+      let response = await QuestionService.removeQuestion(questionId);
       if (response) {
         res.json(response);
       }
@@ -84,7 +84,7 @@ router.delete('/delete/:id', helpers.validateUser,  async function (req, res, ne
   });
 
 
-*/
+
   
 
 module.exports = router;

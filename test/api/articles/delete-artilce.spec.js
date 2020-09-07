@@ -1,1 +1,0 @@
-//TODO: implement delete article integration test

@@ -1,1 +1,0 @@
-//TODO: write article api endpoints integration tests

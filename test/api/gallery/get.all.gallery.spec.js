@@ -1,1 +1,0 @@
-//TODO: implement get all pictures api endpoint test
