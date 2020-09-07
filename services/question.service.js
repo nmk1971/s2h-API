@@ -1,23 +1,14 @@
 const addQuestion = Question => Quiz => async (question) => {
     const newQuestion = new Question(question);
     const quizId=question.quizId;
-    var questionId;
+
     try {
         const save = await newQuestion.save();
         let quiz=await Quiz.findById(quizId);
         quiz.questions.push(save._id);
-        let updatedQuiz=await Quiz.findByIdAndUpdate(quizId,quiz);
-/*   updatedQuiz= await Quiz.findOneAndUpdate(
-    { _id: quizId }, 
-    { $push: { questions: save._id  } },
-   function (error, success) {
-         if (error) {
-             console.log(error);
-         } else {
-             console.log(success);
-         }
-     });*/
-         if (save && updatedQuiz) {
+        quiz.save();
+
+         if (save) {
             return ({
                 status: "success",
                 message: "Question added successfully",
@@ -121,12 +112,13 @@ const updateQuestion = Question => async (id, question) => {
         })
     }
 }
-/*
-let removeQuestion = Question =>  async (questionId, creator) => {
-    const query = await Question.findById(questionId);
-    quizId = query.quizId;
-    const actualCreator = query.creator;
-    if (id === undefined) {
+
+let removeQuestion = Question => Quiz =>  async (questionId, creator) => {
+    const concernedQuestion = await Question.findById(questionId);
+    quizId = concernedQuestion.quizId;
+    let concernedQuiz = await Quiz.findById(quizId);
+    const actualCreator = concernedQuiz.creator;
+    if (questionId === undefined) {
         return ({
             status: "error",
             message: "Unable to remove Question",
@@ -146,9 +138,9 @@ let removeQuestion = Question =>  async (questionId, creator) => {
             let question = await Question.deleteOne({
                 _id: questionId
             });
- /*           let updatedQuiz = Quiz.findById(quizId);
-            updatedQuiz.questions = updatedQuiz.questions.filter(qid => qid !== questionId);
-            await updatedQuiz.save();
+            concernedQuiz.questions = concernedQuiz.questions.filter(qid => String(qid) !== String(questionId));
+            //console.log(typeof(qid),'    ',typeof(questionId),' ',qid,questionId);
+            await concernedQuiz.save();
 
 
             if (question) {
@@ -170,38 +162,7 @@ let removeQuestion = Question =>  async (questionId, creator) => {
         }
     }
 }
-*/
-const removeQuestion = Question => async (id) => {
-    if (id === undefined) {
-        return ({
-            status: "error",
-            message: "Unable to remove Quiz",
-            payload: null
-        })
-    } ;
-    
-        try {
-            let question = await Question.deleteOne({
-                _id: id
-            });
-            if (question) {
-                return ({
-                    status: "success",
-                    message: `Question removed successfully`,
-                    payload: question
-                });
-            }
 
-
-        } catch (error) {
-            return ({
-                status: "error",
-                message: "Removing Question is failed",
-                payload: error
-            })
-        }
-   
-}
 module.exports = (Question) => {
     return {
         addQuestion: addQuestion(Question),

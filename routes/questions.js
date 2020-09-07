@@ -74,7 +74,7 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
     let questionId = req.params.id;
     try {
-      let response = await QuestionService.removeQuestion(questionId);
+      let response = await QuestionService.removeQuestion(QuizSchema)(questionId, req.body.logged.userid);
       if (response) {
         res.json(response);
       }
