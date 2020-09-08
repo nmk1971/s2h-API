@@ -73,7 +73,7 @@ const getQuizById = Quiz => async (id) => {
         })
     } else {
         try {
-            let quiz = await Quiz.findById(id).populate('creator');
+            let quiz = await Quiz.findById(id).populate('creator').populate('questions');
             if (quiz) {
                 return ({
                     status: "success",

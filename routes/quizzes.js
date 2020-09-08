@@ -91,6 +91,7 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
 
 
   // remove a quiz
+  //TODO: to delete orpheline question of death Quiz
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
     let quizId = req.params.id;
     try {

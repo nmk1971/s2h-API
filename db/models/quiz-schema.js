@@ -15,7 +15,8 @@ const QuizSchema = new Schema({
     theme:{
         type:String,
         required:true,
-        trim: true
+        trim: true,
+        default:'Général'
     },
     description: {
         type: String,
