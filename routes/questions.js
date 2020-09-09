@@ -70,7 +70,7 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
   });
 
 
-  // remove a quiz
+  // remove a question
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
     let questionId = req.params.id;
     try {

@@ -8,6 +8,7 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const quizzesRouter = require('./routes/quizzes');
+const quizSessionsRouter = require('./routes/quiz-sessions');
 const questionsRouter = require('./routes/questions');
 
 
@@ -25,6 +26,7 @@ app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/quizzes', quizzesRouter);
 app.use('/api/v1/questions', questionsRouter);
+app.use('/api/v1/quiz-sessions',quizSessionsRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
