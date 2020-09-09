@@ -146,7 +146,7 @@ const updateQuiz = Quiz => async (id, quiz) => {
     }
 }
 
-const removeQuiz = Quiz => async (id,creator) => {
+const removeQuiz = Quiz => Question => async (id,creator) => {
     const query=await Quiz.findById(id);
     const actualCreator=query.creator;
     if (id === undefined) {
@@ -168,6 +168,9 @@ const removeQuiz = Quiz => async (id,creator) => {
             let quiz = await Quiz.deleteOne({
                 _id: id
             });
+
+            let delQuestion = await Question.deleteMany({quizId:id});
+
             if (quiz) {
                 return ({
                     status: "success",

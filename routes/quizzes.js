@@ -3,6 +3,7 @@ const router = express.Router();
 const QuizSchema = require('../db/models/quiz-schema');
 const helpers = require('../helpers/user-validation');
 const QuizService = require('../services/quiz.service')(QuizSchema);
+const Question = require('../db/models/question-schema');
 
 
 // @ts-check
@@ -95,7 +96,7 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
     let quizId = req.params.id;
     try {
-      let response = await QuizService.removeQuiz(quizId,req.body.logged.userid);
+      let response = await QuizService.removeQuiz(Question)(quizId,req.body.logged.userid);
       if (response) {
         res.json(response);
       }

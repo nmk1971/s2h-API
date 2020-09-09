@@ -20,30 +20,6 @@ router.post('/open', helpers.validateUser, async function (req, res, next) {
 
 });
 
-/*
-// get all Quizzes
-router.get('/', helpers.validateUser, helpers.isAdmin, async function (req, res, next) {
-  try {
-      let response = await QuizService.getAllQuizzes();
-      if (response) {
-          res.json(response)
-      }
-  } catch (error) {
-      next(error)
-  }
-});
-// get shared Quizzes
-router.get('/shared', helpers.validateUser, async function (req, res, next) {
-  try {
-      let response = await QuizService.getSharedQuizzes();
-      if (response) {
-          res.json(response)
-      }
-  } catch (error) {
-      next(error)
-  }
-});
-*/
 // get Quiz Session by ID 
 router.get('/:id', helpers.validateUser,  async function (req, res, next) {
   let quizSessionId=req.params.id;
@@ -70,27 +46,8 @@ router.get('/creator/:userId', helpers.validateUser, async function (req, res, n
     }
 });
 
-/*
-// Update a given Quiz
-router.put('/update/:id', helpers.validateUser, async function (req, res, next) {
-    let quizId = req.params.id;
-    let quiz = {
-      ...req.body
-    };
-  
-    try {
-      let response = await QuizService.updateQuiz(quizId,quiz);
-      if (response) {
-        res.json(response);
-      }
-    } catch (error) {
-      next(error);
-    }
-  });
 
-*/
   // close a quiz session
-  //TODO: to delete orpheline question of death Quiz
 router.delete('/close/:id', helpers.validateUser,  async function (req, res, next) {
     let quizSessionId = req.params.id;
     try {
