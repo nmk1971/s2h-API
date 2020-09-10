@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
 const UserModel=require('./db/models/user-schema');
 const config=require('./config/db_connect');
-const DB_URI = 'mongodb://localhost:27017/digital_feed_generator_db';
+require('dotenv').config()
+
+const DB_URI = process.env.MONGO_URI;
 //const DB_URI = config.remote_production;
 
 function connect() {
@@ -20,14 +22,14 @@ function close() {
     return mongoose.disconnect();
 }
 
-
+//TODO:Initial DB Population
 
 async function seedDb(){
     let admin={
         "fullusername": "ADMIN",
-        "email": "supervisor@idoormedia.de",
-        "password": "Toto2019*-1",
-        "city":"Erlangen",
+        "email": "nasrallah.med.khelil@gmail.com",
+        "password": "toto",
+        "city":"Tunss",
         "role":"ADMIN",
         "isGranted":true,
         "phone": "+216 22 45 79 16"

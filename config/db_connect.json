@@ -1,6 +1,6 @@
 {
     "local": "",
-    "remote_stage": "mongodb+srv://nmk1971:Azerty2014poiu@cluster0.1eqzg.mongodb.net/s2h_db?retryWrites=true&w=majority",
-    "remote_production": "mongodb+srv://nmk1971:Azerty2014poiu@cluster0.1eqzg.mongodb.net/s2h_db?retryWrites=true&w=majority",
+    "remote_stage": "",
+    "remote_production": "",
     "test":"mongodb://localhost:27017/s2h_db"
 }

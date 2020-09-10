@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const config=require('../config/db_connect');
+//const config=require('../config/db_connect');
+require('dotenv').config(); 
 
-//const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/digital_feed_generator_db';
-const DB_URI = config.remote_stage;
+const DB_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/s2h_db';
+//const DB_URI = config.remote_stage;
 
 function connect() {
   return new Promise((resolve, reject) => {
