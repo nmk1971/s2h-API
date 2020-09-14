@@ -1,3 +1,5 @@
+//const { delete } = require("../routes/quizzes");
+
 const addQuiz = Quiz => async (quiz) => {
     const newQuiz = new Quiz(quiz)
     try {
@@ -191,6 +193,65 @@ const removeQuiz = Quiz => Question => async (id,creator) => {
 }
 
 
+const duplicateQuiz = Quiz => Question => async (id,creator) => {
+    const query=await Quiz.findById(id);
+    const isShared=query.isShared;
+    if (id === undefined) {
+        return ({
+            status: "error",
+            message: "Unable to dupplicate Quiz",
+            payload: null
+        })
+    } ;
+    if(!isShared){
+         return ({
+            status: "error",
+            message: "Your are not allowed to dupplicate this Quiz",
+            payload: null
+        })
+    } else{
+      
+        try {
+            let quiz = await Quiz.findOne({
+                _id: id
+            });
+            quiz=quiz.toObject();
+            console.log(quiz);
+            delete quiz['_id'];
+            let newQuiz=new Quiz(quiz);
+            newQuiz.creator=creator;
+            newQuiz.questions=[];
+            await newQuiz.save();
+            let questions = await Question.find({quizId:id});
+            for (let quest of questions){
+                quest=quest.toObject();
+                delete quest['_id'];
+                let newQuest=new Question(quest);
+                newQuest.quizId=newQuiz._id;
+                await newQuest.save();
+                newQuiz.questions.push(String(newQuest._id));
+            }
+            await newQuiz.save();
+            if (quiz) {
+                return ({
+                    status: "success",
+                    message: `Quiz duplicated successfully`,
+                    payload: quiz
+                });
+            }
+
+
+        } catch (error) {
+            return ({
+                status: "error",
+                message: "Duplicating Quiz is failed",
+                payload: error
+            })
+        }
+    }
+}
+
+
 
 module.exports = (Quiz) => {
     return {
@@ -200,6 +261,7 @@ module.exports = (Quiz) => {
         getQuizzesByCreator: getQuizzesByCreator(Quiz),
         updateQuiz: updateQuiz(Quiz),
         removeQuiz: removeQuiz(Quiz),
-        getSharedQuizzes:getSharedQuizzes(Quiz)
+        getSharedQuizzes:getSharedQuizzes(Quiz),
+        duplicateQuiz:duplicateQuiz(Quiz)
     }
 }

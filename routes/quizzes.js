@@ -90,6 +90,19 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
     }
   });
 
+  // Duplicate a Shared Quiz
+router.post('/duplicate/:id', helpers.validateUser, async function (req, res, next) {
+  let quizId = req.params.id;
+   
+  try {
+    let response = await QuizService.duplicateQuiz(Question)(quizId,req.body.logged.userid);
+    if (response) {
+      res.json(response);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
   // remove a quiz
   //TODO: to delete orpheline question of death Quiz
@@ -104,9 +117,5 @@ router.delete('/delete/:id', helpers.validateUser,  async function (req, res, ne
       next(error);
     }
   });
-
-
-
-  
 
 module.exports = router;
