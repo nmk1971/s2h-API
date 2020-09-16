@@ -163,12 +163,45 @@ let removeQuestion = Question => Quiz =>  async (questionId, creator) => {
     }
 }
 
+/*
+* getQuestionByQuizId : return an array of questions for given quizId
+* @param Question
+* @param quizId
+*/
+const getQuestionsByQuizId = Question => async (quizId) => {
+    if (quizId === undefined) {
+        return ({
+            status: "error",
+            message: `Cant't get Questions without quiz Id`,
+            payload: null
+        })
+    } else {
+        try {
+            let questions = await Question.find({quizId:quizId});
+            if (questions) {
+                return ({
+                    status: "success",
+                    message: "success to get the Questions for this Quiz",
+                    payload: questions
+                })
+            }
+        } catch (error) {
+            return ({
+                status: "error",
+                message: "Unable to get the Questions for this Quiz",
+                payload: error
+            })
+        }
+    }
+}
+
 module.exports = (Question) => {
     return {
         addQuestion: addQuestion(Question),
         getQuestionById: getQuestionById(Question),
         getQuestionsByCreator: getQuestionsByCreator(Question),
         updateQuestion: updateQuestion(Question),
-        removeQuestion: removeQuestion(Question)
+        removeQuestion: removeQuestion(Question),
+        getQuestionsByQuizId: getQuestionsByQuizId(Question)
     }
 }

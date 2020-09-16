@@ -72,16 +72,29 @@ router.put('/update/:id', helpers.validateUser, async function (req, res, next) 
 
   // remove a question
 router.delete('/delete/:id', helpers.validateUser,  async function (req, res, next) {
-    let questionId = req.params.id;
-    try {
-      let response = await QuestionService.removeQuestion(QuizSchema)(questionId, req.body.logged.userid);
-      if (response) {
-        res.json(response);
-      }
-    } catch (error) {
-      next(error);
+  let questionId = req.params.id;
+  try {
+    let response = await QuestionService.removeQuestion(QuizSchema)(questionId, req.body.logged.userid);
+    if (response) {
+      res.json(response);
     }
-  });
+  } catch (error) {
+    next(error);
+  }
+});
+
+ // Get Questions by QuizId
+ router.get('/shared/:quizId', helpers.validateUser,  async function (req, res, next) {
+  let quizId = req.params.quizId;
+  try {
+    let response = await QuestionService.getQuestionsByQuizId(quizId);
+    if (response) {
+      res.json(response);
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 
 
