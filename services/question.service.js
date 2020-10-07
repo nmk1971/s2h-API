@@ -177,6 +177,7 @@ const getQuestionsByQuizId = Question => async (quizId) => {
         })
     } else {
         try {
+            // to append to the find method : .skip(1).limit(1).sort({questionText:'asc'});
             let questions = await Question.find({quizId:quizId});
             if (questions) {
                 return ({
@@ -205,3 +206,5 @@ module.exports = (Question) => {
         getQuestionsByQuizId: getQuestionsByQuizId(Question)
     }
 }
+
+//TODO: Implement Pagination for retreving all resources

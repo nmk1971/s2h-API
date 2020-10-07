@@ -14,6 +14,12 @@ const QuizSessionSchema = new Schema({
         required: true,
         trim: true
     },
+    
+    evaluationType: {
+        type: String,
+        trim: true
+    },
+
     creator: {
         type: Schema.Types.ObjectId,
         ref: "User",
