@@ -11,6 +11,7 @@ const quizzesRouter = require('./routes/quizzes');
 const quizSessionsRouter = require('./routes/quiz-sessions');
 const questionsRouter = require('./routes/questions');
 const groupsRouter = require('./routes/group');
+const studentsRouter = require('./routes/student');
 
 
 const app = express();
@@ -29,6 +30,7 @@ app.use('/api/v1/quizzes', quizzesRouter);
 app.use('/api/v1/questions', questionsRouter);
 app.use('/api/v1/quiz-sessions',quizSessionsRouter);
 app.use('/api/v1/groups',groupsRouter);
+app.use('/api/v1/students',studentsRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
