@@ -64,7 +64,7 @@ const getStudentById = Student => async (id) => {
     }
 }
 
-const getStudentsByCreator = Student => Group => async (creatorId) => {
+const getStudentsByCreator = Student => Group => async (creatorId,options) => {
     if (creatorId === undefined) {
         return ({
             status: "error",
@@ -73,13 +73,16 @@ const getStudentsByCreator = Student => Group => async (creatorId) => {
         })
     } else {
         try {
-            let groups = await Group.find({ owner: creatorId }).populate('students');
-            let students = [];
-            for (let g of groups) {
-                students.push(g.students);
-            }
-            students = students.flatMap(x => x);
-
+             let sort={};
+             console.log('inside service : ', options);
+            sort[options.fieldToSort]=options.direction;
+console.log(sort);
+            let students = await Student.find({ creator: creatorId })
+                                        .sort(sort)
+                                      .skip(options.offset)
+                                      .limit(options.limit);
+                                      
+        
             if (students) {
                 return ({
                     status: "success",
