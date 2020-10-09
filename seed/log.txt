@@ -1,38 +1,5 @@
- .... :) ....
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Group added successfully',
-  payload: {
-    students: [],
-    _id: '5f7f77fe8ea7e13628844bfc',
-    label: '3ScExp Lycée Mahdia',
-    owner: '5f4c01a8084aa596e0a800eb',
-    createdAt: '2020-10-08T20:35:10.050Z',
-    updatedAt: '2020-10-08T20:35:10.050Z',
-    __v: 0
-  }
-}
-Inside 2nd then => GroupId:  5f7f77fe8ea7e13628844bfc
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-Saved Student:  Promise { undefined }
-statusCode: undefined
-{
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844bfd',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -45,12 +12,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:10.403Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844bfe',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -63,12 +26,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:10.543Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844bff',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -81,12 +40,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:10.688Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Femme',
     _id: '5f7f77fe8ea7e13628844c00',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -99,12 +54,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:10.887Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Femme',
     _id: '5f7f77fe8ea7e13628844c01',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -117,12 +68,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.065Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c02',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -135,12 +82,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.210Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c03',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -153,12 +96,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.215Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c04',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -171,12 +110,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.225Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c05',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -189,12 +124,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.237Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c06',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -207,12 +138,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.240Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Femme',
     _id: '5f7f77fe8ea7e13628844c07',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -225,12 +152,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.255Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Femme',
     _id: '5f7f77fe8ea7e13628844c08',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -243,12 +166,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.262Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c09',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -261,12 +180,8 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.297Z',
     __v: 0
   }
-}
-statusCode: undefined
+
 {
-  status: 'success',
-  message: 'Student added successfully',
-  payload: {
     gender: 'Homme',
     _id: '5f7f77fe8ea7e13628844c0a',
     group: '5f7f77fe8ea7e13628844bfc',
@@ -279,4 +194,4 @@ statusCode: undefined
     updatedAt: '2020-10-08T20:35:11.326Z',
     __v: 0
   }
-}
+

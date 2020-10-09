@@ -76,7 +76,7 @@ const getStudentsByCreator = Student => Group => async (creatorId,options) => {
              let sort={};
              console.log('inside service : ', options);
             sort[options.fieldToSort]=options.direction;
-console.log(sort);
+            let totalCount =  await Student.find({ creator: creatorId }).count();
             let students = await Student.find({ creator: creatorId })
                                         .sort(sort)
                                       .skip(options.offset)
@@ -87,8 +87,9 @@ console.log(sort);
                 return ({
                     status: "success",
                     message: "success to get the user Students",
-                    payload: students
-                })
+                    payload: {totalCount:totalCount,
+                         items:students}
+                    })
             }
         } catch (error) {
             return ({

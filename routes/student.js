@@ -43,7 +43,7 @@ router.get('/creator/:userId', helpers.validateUser, async function (req, res, n
     let creator = req.params.userId;
     let page = parseInt(req.query.page === undefined ? 0 : req.query.page);
     let limit = parseInt(req.query.limit === undefined ? 10 : req.query.limit);
-    let offset=(page-1)*limit;
+    let offset=page*limit;
     let fieldToSort = req.query.sort === undefined ? 'firstname':req.query.sort;
     let direction = req.query.direction === undefined ? 'asc' :req.query.direction;
     let options={offset,limit,fieldToSort,direction};
