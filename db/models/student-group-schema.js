@@ -12,6 +12,11 @@ const GroupSchema = new Schema({
         required: [true, 'Le nom du groupe est obligatoire'],
         trim: true
     },
+    description: {
+        type: String,
+        required: false,
+        trim: true
+    },
     owner: {
         type:Schema.Types.ObjectId,ref:'User',
         required: [true, 'le Createur du groupe est obligatoire'],

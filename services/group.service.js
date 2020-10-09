@@ -60,7 +60,7 @@ const getGroupsByCreator = Group => async (creatorId) => {
         try {
             let groups = await Group.find({
                 owner: creatorId
-            }).populate('owner');
+            }).populate('owner').populate('students');
             if (groups) {
                 return ({
                     status: "success",
