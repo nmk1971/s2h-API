@@ -36,8 +36,16 @@ router.get('/:id', helpers.validateUser,  async function (req, res, next) {
 // Get Quiz Sessions By Creator
 router.get('/creator/:userId', helpers.validateUser, async function (req, res, next) {
     let creator = req.params.userId;
+    let page = parseInt(req.query.page === undefined ? 0 : req.query.page);
+    let limit = parseInt(req.query.limit === undefined ? 10 : req.query.limit);
+    let offset=page*limit;
+    let fieldToSort = req.query.sort === undefined ? 'opendate':req.query.sort;
+    let direction = req.query.direction === undefined ? 'asc' :req.query.direction;
+    let options={offset,limit,fieldToSort,direction};
+
+    console.log(options)
     try {
-        let response = await QuizSessionService.getQuizSessionsByCreator(creator);
+        let response = await QuizSessionService.getQuizSessionsByCreator(creator,options);
         if (response) {
             res.json(response)
         }

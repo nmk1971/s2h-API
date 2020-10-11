@@ -48,7 +48,7 @@ const QuizSessionSchema = new Schema({
     isopen: {
         type: Boolean,
         required: true,
-        default: true
+        default: false
     },
 
     opendate: {
@@ -66,27 +66,6 @@ const QuizSessionSchema = new Schema({
     timestamps: true
 });
 
-/*
-
-QuizSessionSchema.pre('save', async function (next) {
-    //if (!this.isModified('quizsessioncode')) {
-     //  next();
-    //}
-    var code;
-     while (true) {
-        code = String(Math.round(Math.random(1) * 1000000));
-        console.log("Code1 : ",code);
-      if ( !isExist(code)) {
-            break;
-      }
-    }
-    console.log(code);
-    this.quizsessioncode = code;
-
-    next();
-
-});
-*/
 
 
 

@@ -1,15 +1,21 @@
 const openQuizSession = QuizSession => async (quizSession) => {
+
+    
+    if(quizSession.isAnonymous){
+        quizSession.group=null;
+    }
     const newQuizSession = new QuizSession(quizSession);
     try {
-        let _code=await getCode(QuizSession);
-        newQuizSession.quizsessioncode=_code;
-        
+        //TODO: to reimplemente code creation on start-session request
+        let _code = await getCode(QuizSession);
+        newQuizSession.quizsessioncode = _code;
+
         const save = await newQuizSession.save();
         if (save) {
             return ({
                 status: "success",
                 message: "Quiz Session added successfully",
-                payload: {code:_code,session:save}
+                payload:   save 
             })
         }
     } catch (error) {
@@ -25,11 +31,11 @@ const openQuizSession = QuizSession => async (quizSession) => {
 const closeQuizSession = QuizSession => async (id) => {
 
     try {
-        let quizSession=await QuizSession.findById(id);
-        quizSession.isOpen=false;
+        let quizSession = await QuizSession.findById(id);
+        quizSession.isOpen = false;
         let save = quizSession.save();
 
-         if (save) {
+        if (save) {
             return ({
                 status: "success",
                 message: "Quiz session closed successfully",
@@ -74,7 +80,7 @@ const getQuizSessionById = QuizSession => async (id) => {
 }
 
 
-const getQuizSessionsByCreator = QuizSession => async (creatorId) => {
+const getQuizSessionsByCreator = QuizSession => async (creatorId, options) => {
     if (creatorId === undefined) {
         return ({
             status: "error",
@@ -83,14 +89,22 @@ const getQuizSessionsByCreator = QuizSession => async (creatorId) => {
         })
     } else {
         try {
-            let quizSessions = await QuizSession.find({
-                creator: creatorId
-            });
+            let sort = {};
+            sort[options.fieldToSort] = options.direction;
+            let totalCount = await QuizSession.find({ creator: creatorId }).count();
+            let quizSessions = await QuizSession.find({ creator: creatorId })
+                .sort(sort)
+                .skip(options.offset)
+                .limit(options.limit).populate('idquiz').populate('group');
             if (quizSessions) {
                 return ({
                     status: "success",
                     message: "success to get the user Quiz Sessions",
-                    payload: quizzes
+                    payload: {
+                        totalCount: totalCount,
+                        items: quizSessions
+                    }
+
                 })
             }
         } catch (error) {
@@ -105,17 +119,17 @@ const getQuizSessionsByCreator = QuizSession => async (creatorId) => {
 
 
 // getCode : get unique code session when open
-async function getCode(QuizSession){
+async function getCode(QuizSession) {
     let code;
-        while (true) {
-            code = String(Math.round(Math.random(1) * 1000000));
-            let exist=await QuizSession.find({quizsessioncode:code,isopen:true});
-console.log(code);
-             if ((exist.length===0)&&(code.length===6)) {
-                break;
-          }
-        }    
-       return code;     
+    while (true) {
+        code = String(Math.round(Math.random(1) * 1000000));
+        let exist = await QuizSession.find({ quizsessioncode: code, isopen: true });
+        console.log(code);
+        if ((exist.length === 0) && (code.length === 6)) {
+            break;
+        }
+    }
+    return code;
 }
 
 module.exports = (QuizSession) => {

@@ -74,7 +74,6 @@ const getStudentsByCreator = Student => Group => async (creatorId,options) => {
     } else {
         try {
              let sort={};
-             console.log('inside service : ', options);
             sort[options.fieldToSort]=options.direction;
             let totalCount =  await Student.find({ creator: creatorId }).count();
             let students = await Student.find({ creator: creatorId })
