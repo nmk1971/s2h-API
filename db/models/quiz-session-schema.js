@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Quiz = require('./quiz-schema');
 const User = require('./user-schema');
+const Group = require('./student-group-schema')
 const { boolean } = require("joi");
 
 
@@ -17,7 +18,20 @@ const QuizSessionSchema = new Schema({
     
     evaluationType: {
         type: String,
+        required : true,
         trim: true
+    },
+
+    isAnonymous: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
+
+    group: {
+        type: Schema.Types.ObjectId,
+        ref: "Group",
+        required: false
     },
 
     creator: {
@@ -39,12 +53,14 @@ const QuizSessionSchema = new Schema({
 
     opendate: {
         type: Date,
-        required: true
+        required: true,
+        default : Date.now()
     },
 
     closedate: {
         type: Date,
-        required: true
+        required: true,
+        default : Date.now()
     }
 }, {
     timestamps: true

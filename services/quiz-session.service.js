@@ -9,7 +9,7 @@ const openQuizSession = QuizSession => async (quizSession) => {
             return ({
                 status: "success",
                 message: "Quiz Session added successfully",
-                payload: save
+                payload: {code:_code,session:save}
             })
         }
     } catch (error) {
