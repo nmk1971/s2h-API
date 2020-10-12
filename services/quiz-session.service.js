@@ -1,21 +1,18 @@
-const openQuizSession = QuizSession => async (quizSession) => {
-
-    
-    if(quizSession.isAnonymous){
-        quizSession.group=null;
+/*
+* Create new Session for a given Quiz whith isOpen = false
+*/
+const createQuizSession = QuizSession => async (quizSession) => {
+    if (quizSession.isAnonymous) {
+        quizSession.group = null;
     }
     const newQuizSession = new QuizSession(quizSession);
     try {
-        //TODO: to reimplemente code creation on start-session request
-        let _code = await getCode(QuizSession);
-        newQuizSession.quizsessioncode = _code;
-
         const save = await newQuizSession.save();
         if (save) {
             return ({
                 status: "success",
                 message: "Quiz Session added successfully",
-                payload:   save 
+                payload: save
             })
         }
     } catch (error) {
@@ -28,24 +25,80 @@ const openQuizSession = QuizSession => async (quizSession) => {
 
 }
 
-const closeQuizSession = QuizSession => async (id) => {
 
+/*
+* start a given Session for a given Quiz whith isOpen = true
+*/
+const startQuizSession = QuizSession => async (quizSessionId) => {
+    if (!quizSessionId) {
+        return ({
+            status: "error",
+            message: "Unable to start unknown Session",
+            payload: 'error'
+        })
+    }
+    let theQuizSession = await QuizSession.findById(quizSessionId);
+
+    if (theQuizSession.startdate !== null) {
+        return ({
+            status: "error",
+            message: "Unable to restart closed Session",
+            payload: 'Error'
+        })
+    }
     try {
-        let quizSession = await QuizSession.findById(id);
-        quizSession.isOpen = false;
-        let save = quizSession.save();
-
+      
+        let code = await getCode(QuizSession);
+        theQuizSession.quizsessioncode = code;
+        theQuizSession.isopen = true;
+        theQuizSession.startdate = new Date();
+        const save = await theQuizSession.save();
         if (save) {
             return ({
                 status: "success",
-                message: "Quiz session closed successfully",
+                message: "Quiz Session started successfully",
                 payload: save
             })
         }
     } catch (error) {
         return ({
             status: "error",
-            message: "Unable to close Quiz Session",
+            message: "Unable to start the Quiz Session",
+            payload: error
+        })
+    }
+
+}
+
+/*
+* Close a Session for a given Quiz whith isOpen = false
+*/
+const closeQuizSession = QuizSession => async (quizSessionId) => {
+    if (!quizSessionId) {
+        return ({
+            status: "error",
+            message: "Unable to close unknown Session",
+            payload: error
+        })
+    }
+    try {
+
+        let theQuizSession = await QuizSession.findById(quizSessionId);
+        theQuizSession.isopen = false;
+        theQuizSession.closedate = new Date();
+
+        const save = await theQuizSession.save();
+        if (save) {
+            return ({
+                status: "success",
+                message: "Quiz Session closed successfully",
+                payload: save
+            })
+        }
+    } catch (error) {
+        return ({
+            status: "error",
+            message: "Unable to close the Quiz Session",
             payload: error
         })
     }
@@ -79,7 +132,9 @@ const getQuizSessionById = QuizSession => async (id) => {
     }
 }
 
-
+/*
+* getQuizSessions for a given Creator ordered by createdate
+*/
 const getQuizSessionsByCreator = QuizSession => async (creatorId, options) => {
     if (creatorId === undefined) {
         return ({
@@ -134,9 +189,10 @@ async function getCode(QuizSession) {
 
 module.exports = (QuizSession) => {
     return {
-        openQuizSession: openQuizSession(QuizSession),
-        getQuizSessionById: getQuizSessionById(QuizSession),
-        getQuizSessionsByCreator: getQuizSessionsByCreator(QuizSession),
+        createQuizSession: createQuizSession(QuizSession),
+        startQuizSession: startQuizSession(QuizSession),
         closeQuizSession: closeQuizSession(QuizSession),
+        getQuizSessionById: getQuizSessionById(QuizSession),
+        getQuizSessionsByCreator: getQuizSessionsByCreator(QuizSession)
     }
 }

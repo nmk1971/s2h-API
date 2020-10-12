@@ -50,17 +50,19 @@ const QuizSessionSchema = new Schema({
         required: true,
         default: false
     },
-//TODO: to adjust opendate to createDate / and add startDate 
-    opendate: {
+
+    createdate: {
         type: Date,
         required: true,
         default : Date.now()
     },
 
+   startdate: {
+        type: Date
+    },
+    
     closedate: {
-        type: Date,
-        required: true,
-        default : Date.now()
+        type: Date
     }
 }, {
     timestamps: true

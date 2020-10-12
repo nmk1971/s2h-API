@@ -28,7 +28,7 @@ app.use('/', indexRouter);
 app.use('/api/v1/users', usersRouter);
 app.use('/api/v1/quizzes', quizzesRouter);
 app.use('/api/v1/questions', questionsRouter);
-app.use('/api/v1/quiz-sessions',quizSessionsRouter);
+app.use('/api/v1/sessions',quizSessionsRouter);
 app.use('/api/v1/groups',groupsRouter);
 app.use('/api/v1/students',studentsRouter);
 app.use(express.static(path.join(__dirname, 'public')));
