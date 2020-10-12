@@ -114,12 +114,12 @@ const getQuizSessionById = QuizSession => async (id) => {
         })
     } else {
         try {
-            let quizSession = await QuizSession.findById(id);
+            let quizSession = await QuizSession.findById(id).populate('idquiz').populate('group');
             if (quizSession) {
                 return ({
                     status: "success",
                     message: "success to get the Quiz Session",
-                    payload: quiz
+                    payload: quizSession
                 })
             }
         } catch (error) {

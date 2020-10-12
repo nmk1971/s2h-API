@@ -49,6 +49,7 @@ router.get('/:id', helpers.validateUser,  async function (req, res, next) {
   let quizSessionId=req.params.id;
   try {
       let response = await QuizSessionService.getQuizSessionById(quizSessionId);
+     
       if (response) {
           res.json(response)
       }
