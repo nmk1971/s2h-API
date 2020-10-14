@@ -29,12 +29,12 @@ const getGroupById = Group => async (id) => {
         })
     } else {
         try {
-            let group = await Group.findById(id).populate('owner');
+            let group = await Group.findById(id).populate('owner').populate('students');
             if (group) {
                 return ({
                     status: "success",
                     message: "success to get the Group",
-                    payload: quiz
+                    payload: group
                 })
             }
         } catch (error) {

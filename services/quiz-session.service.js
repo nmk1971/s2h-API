@@ -1,3 +1,6 @@
+const Group = require('../db/models/quiz-schema');
+const Student = require('../db/models/student-schema');
+
 /*
 * Create new Session for a given Quiz whith isOpen = false
 */
@@ -39,7 +42,7 @@ const startQuizSession = QuizSession => async (quizSessionId) => {
     }
     let theQuizSession = await QuizSession.findById(quizSessionId);
 
-    if (theQuizSession.startdate !== null) {
+    if (theQuizSession.startdate !== undefined) {
         return ({
             status: "error",
             message: "Unable to restart closed Session",
@@ -114,7 +117,15 @@ const getQuizSessionById = QuizSession => async (id) => {
         })
     } else {
         try {
-            let quizSession = await QuizSession.findById(id).populate('idquiz').populate('group');
+            let quizSession = await QuizSession.findById(id)
+                .populate('idquiz')
+                .populate({
+                    path:'group',
+                    populate:(
+                        {
+                            path:'students'
+                        })
+                    });
             if (quizSession) {
                 return ({
                     status: "success",
@@ -179,7 +190,6 @@ async function getCode(QuizSession) {
     while (true) {
         code = String(Math.round(Math.random(1) * 1000000));
         let exist = await QuizSession.find({ quizsessioncode: code, isopen: true });
-        console.log(code);
         if ((exist.length === 0) && (code.length === 6)) {
             break;
         }

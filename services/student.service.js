@@ -2,13 +2,16 @@ const addStudent = Student => Group => async (student) => {
     const newStudent = new Student(student);
     const groupId = student.group;
     const groupCreator = (await Group.findById(groupId)).toObject();
-    const creatorId= String(groupCreator.owner);
-
+    const creatorId = String(groupCreator.owner);
+    const credential = generateStudentCredential(student.firstname, student.lastname);
+    newStudent.loginname = credential.login;
+    newStudent.password = credential.password;
+    
     if (creatorId !== student.creator) {
         return ({
             status: "error",
             message: "You are not allowed to add Student, group conflict",
-            payload: newStudent
+            payload: "error"
         })
     }
 
@@ -64,7 +67,7 @@ const getStudentById = Student => async (id) => {
     }
 }
 
-const getStudentsByCreator = Student => Group => async (creatorId,options) => {
+const getStudentsByCreator = Student => Group => async (creatorId, options) => {
     if (creatorId === undefined) {
         return ({
             status: "error",
@@ -73,22 +76,25 @@ const getStudentsByCreator = Student => Group => async (creatorId,options) => {
         })
     } else {
         try {
-             let sort={};
-            sort[options.fieldToSort]=options.direction;
-            let totalCount =  await Student.find({ creator: creatorId }).count();
+            let sort = {};
+            sort[options.fieldToSort] = options.direction;
+            let totalCount = await Student.find({ creator: creatorId }).count();
             let students = await Student.find({ creator: creatorId })
-                                        .sort(sort)
-                                      .skip(options.offset)
-                                      .limit(options.limit);
-                                      
-        
+                .populate('group', 'label')
+                .sort(sort)
+                .skip(options.offset)
+                .limit(options.limit);
+
+
             if (students) {
                 return ({
                     status: "success",
                     message: "success to get the user Students",
-                    payload: {totalCount:totalCount,
-                         items:students}
-                    })
+                    payload: {
+                        totalCount: totalCount,
+                        items: students
+                    }
+                })
             }
         } catch (error) {
             return ({
@@ -219,6 +225,32 @@ module.exports = (Student) => {
         removeStudent: removeStudent(Student),
         getStudentsByGroupId: getStudentsByGroupId(Student)
     }
+}
+
+function generateStudentCredential(firstname, lastname) {
+    if (
+        (firstname === undefined) || (lastname === undefined)
+        || (firstname === '') || (lastname === '')
+    ) {
+        return ({ login: null, password: null })
+    }
+    const char1 = firstname[0].toUpperCase();
+    const char2 = lastname[0].toUpperCase();
+
+    let code;
+    while (true) {
+        code = String(Math.round(Math.random(1) * 1000));
+        if (code.length === 3) {
+            break;
+        }
+    }
+    login = char1+char2+code;
+    const chars='0123456789'+'abcdefghigklmnopqrstuvwxyz'+'abcdefghigklmnopqrstuvwxyz'.toUpperCase();
+    let password = '';
+    for (var i=0; i<6 ; i++){
+        password += chars[Math.round(Math.random(1) * (chars.length - 1))];
+    }
+    return ({login : login, password : password});
 }
 
 //TODO: Implement Pagination for retreving all resources
