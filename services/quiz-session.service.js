@@ -50,7 +50,7 @@ const startQuizSession = QuizSession => async (quizSessionId) => {
         })
     }
     try {
-      
+
         let code = await getCode(QuizSession);
         theQuizSession.quizsessioncode = code;
         theQuizSession.isopen = true;
@@ -120,12 +120,12 @@ const getQuizSessionById = QuizSession => async (id) => {
             let quizSession = await QuizSession.findById(id)
                 .populate('idquiz')
                 .populate({
-                    path:'group',
-                    populate:(
+                    path: 'group',
+                    populate: (
                         {
-                            path:'students'
+                            path: 'students'
                         })
-                    });
+                });
             if (quizSession) {
                 return ({
                     status: "success",
@@ -184,6 +184,58 @@ const getQuizSessionsByCreator = QuizSession => async (creatorId, options) => {
 }
 
 
+
+// getSessionIdByCode
+const getSessionByCode = QuizSession => async (code) => {
+    if ((code === undefined) || (code === '')) {
+        return ({
+            status: "error",
+            message: `Unable get Quiz Sessions without code`,
+            payload: null
+        })
+    } else {
+        try {
+            let session = await QuizSession.findOne({
+                $and: [
+                    { quizsessioncode: code },
+                    { isopen: true }
+                ]
+            }).exec();
+            if (session) {
+                return ({
+                    status: "success",
+                    message: "success to get the Quiz Session",
+                    payload: session
+                })
+            }else {
+                return ({
+                    status: "error",
+                    message: "unabled to get the Quiz Session",
+                    payload: null
+                })
+            }
+        }
+        catch {
+            return ({
+                status: "error",
+                message: "Unable to get the Quiz Session for this code",
+                payload: error
+            })
+        }
+    }
+}
+
+module.exports = (QuizSession) => {
+    return {
+        createQuizSession: createQuizSession(QuizSession),
+        startQuizSession: startQuizSession(QuizSession),
+        closeQuizSession: closeQuizSession(QuizSession),
+        getQuizSessionById: getQuizSessionById(QuizSession),
+        getQuizSessionsByCreator: getQuizSessionsByCreator(QuizSession),
+        getSessionByCode: getSessionByCode(QuizSession)
+    }
+}
+
 // getCode : get unique code session when open
 async function getCode(QuizSession) {
     let code;
@@ -195,14 +247,4 @@ async function getCode(QuizSession) {
         }
     }
     return code;
-}
-
-module.exports = (QuizSession) => {
-    return {
-        createQuizSession: createQuizSession(QuizSession),
-        startQuizSession: startQuizSession(QuizSession),
-        closeQuizSession: closeQuizSession(QuizSession),
-        getQuizSessionById: getQuizSessionById(QuizSession),
-        getQuizSessionsByCreator: getQuizSessionsByCreator(QuizSession)
-    }
 }
