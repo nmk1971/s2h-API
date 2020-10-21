@@ -1,3 +1,5 @@
+const getConsumerToken = require('../helpers/auth.helpers').getConsumerToken;
+
 const addStudent = Student => Group => async (student) => {
     const newStudent = new Student(student);
     const groupId = student.group;
@@ -216,6 +218,47 @@ const getStudentsByGroupId = Student => async (groupId) => {
     }
 }
 
+
+/*
+* Student Authentication
+*/
+const authenticateStudent = Student => async (loginname,password) => {
+    if (!loginname || !password) {
+        return ({
+            status: "fail",
+            message: "can't authenticate without credential",
+            payload: null
+        })
+    }
+
+    try {
+        const student = await Student.findOne({$and:[{loginname: loginname},{password:password}]}).populate('customer');
+        if (student) {
+            const token = getConsumerToken(student);
+            return ({
+                status: "success",
+                message: "user authenticated succssfully!!!",
+                payload: {
+                    user: student.toJSON(),
+                    token: token
+                }
+            });
+        } else {
+            return ({
+                status: "error",
+                message: "Invalid login or password!!!",
+                payload: null
+            })
+        }
+    } catch (error) {
+        return ({
+            status: "error",
+            message: "user can't authenticate",
+            payload: null
+        });
+    }
+}
+
 module.exports = (Student) => {
     return {
         addStudent: addStudent(Student),
@@ -223,7 +266,8 @@ module.exports = (Student) => {
         getStudentsByCreator: getStudentsByCreator(Student),
         updateStudent: updateStudent(Student),
         removeStudent: removeStudent(Student),
-        getStudentsByGroupId: getStudentsByGroupId(Student)
+        getStudentsByGroupId: getStudentsByGroupId(Student),
+        authenticateStudent:authenticateStudent(Student)
     }
 }
 

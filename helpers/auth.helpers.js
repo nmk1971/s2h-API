@@ -14,11 +14,27 @@ function getToken(user) {
     });
 }
 
+
+/*
+* Token generator for student
+*/
+function getConsumerToken(student) {
+    return jwt.sign({
+        id: student._id,
+        loginname: student.loginname,
+        gender: student.gender
+    }, secretKey, {
+        expiresIn: '1d'
+    });
+}
+
+
 function comparePassword(givenPassword, userPassword) {
     return bcrypt.compareSync(givenPassword, userPassword)
 }
 
 module.exports={
     getToken:getToken,
-    comparePassword:comparePassword
+    comparePassword:comparePassword,
+    getConsumerToken:getConsumerToken
 }

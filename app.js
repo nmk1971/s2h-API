@@ -13,6 +13,7 @@ const questionsRouter = require('./routes/questions');
 const groupsRouter = require('./routes/group');
 const studentsRouter = require('./routes/student');
 const responseRouter = require('./routes/consumer/response-session');
+const consumerRouter = require('./routes/consumer/student-as-consumer');
 
 
 const app = express();
@@ -33,6 +34,7 @@ app.use('/api/v1/sessions',quizSessionsRouter);
 app.use('/api/v1/groups',groupsRouter);
 app.use('/api/v1/students',studentsRouter);
 app.use('/api/v1/response',responseRouter);
+app.use('/api/v1/response/student',consumerRouter);
 app.use(express.static(path.join(__dirname, 'public')));
 
 
