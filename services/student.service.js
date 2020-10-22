@@ -222,17 +222,18 @@ const getStudentsByGroupId = Student => async (groupId) => {
 /*
 * Student Authentication
 */
-const authenticateStudent = Student => async (loginname,password) => {
-    if (!loginname || !password) {
+const authenticateStudent = Student => async (loginname,password, groupid) => {
+    if (!loginname || !password || !groupid) {
         return ({
-            status: "fail",
-            message: "can't authenticate without credential",
+            status: "error",
+            message: "can't authenticate without credential or wrong Group",
             payload: null
         })
     }
 
     try {
-        const student = await Student.findOne({$and:[{loginname: loginname},{password:password}]}).populate('customer');
+        const student = await Student.findOne({$and:[{loginname: loginname},{password:password}, {group:groupid}]});
+
         if (student) {
             const token = getConsumerToken(student);
             return ({

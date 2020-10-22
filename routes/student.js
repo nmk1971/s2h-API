@@ -48,8 +48,6 @@ router.get('/creator/:userId', helpers.validateUser, async function (req, res, n
     let direction = req.query.direction === undefined ? 'asc' :req.query.direction;
     let options={offset,limit,fieldToSort,direction};
   
-    console.log(options);
-
     try {
         let response = await StudentService.getStudentsByCreator(GroupSchema)(creator,options);
         if (response) {

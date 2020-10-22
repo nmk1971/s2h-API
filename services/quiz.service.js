@@ -216,7 +216,6 @@ const duplicateQuiz = Quiz => Question => async (id,creator) => {
                 _id: id
             });
             quiz=quiz.toObject();
-            console.log(quiz);
             delete quiz['_id'];
             let newQuiz=new Quiz(quiz);
             newQuiz.creator=creator;

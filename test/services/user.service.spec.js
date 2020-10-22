@@ -846,7 +846,6 @@ describe("userService Test suite", () => {
             expect(result.status).to.equal('error');
             expect(result.message).to.equal(`Error can't assign User to Customer`);
             expect(result.payload).not.to.be.undefined;
-            console.log(result.payload);
 
         })
 

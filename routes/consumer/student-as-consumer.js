@@ -10,14 +10,14 @@ router.post('/authenticate', async function (req, res, next) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(422).json({
-        status: "fail",
+        status: "error",
         message: errors.array(),
         payload: null
       });
     } else {
       try {
-        let { loginname,password } = req.body;
-        let result=await StudentService.authenticateStudent(loginname, password)
+        let { loginname,password,groupid } = req.body;
+        let result=await StudentService.authenticateStudent(loginname, password,groupid)
         if(result){
             res.json(result);
         }
