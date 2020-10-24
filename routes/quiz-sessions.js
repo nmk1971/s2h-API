@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const helpers = require('../helpers/user-validation');
 const QuizSessionSchema = require('../db/models/quiz-session-schema');
-const QuizSessionService = require('../services/quiz-session.service')(QuizSessionSchema)
+const QuizSessionService = require('../services/quiz-session.service')(QuizSessionSchema);
 
 // @ts-check
 // Add a new Quiz session

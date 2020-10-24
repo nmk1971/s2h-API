@@ -207,7 +207,7 @@ const getSessionByCode = QuizSession => async (code) => {
                     message: "success to get the Quiz Session",
                     payload: session
                 })
-            }else {
+            } else {
                 return ({
                     status: "error",
                     message: "unabled to get the Quiz Session",
@@ -225,6 +225,68 @@ const getSessionByCode = QuizSession => async (code) => {
     }
 }
 
+// get session/quiz/questions (populated) by session._id
+const getFullSessionById = QuizSession => async (id) => {
+    if ((id === undefined) || (id === '')) {
+        return ({
+            status: "error",
+            message: `Unable get Quiz Sessions without Id`,
+            payload: null
+        })
+    } else {
+        try {
+            const session = await QuizSession.findById(id)
+                .populate(
+                    {
+                        path: 'idquiz',
+                        populate: 'questions',
+
+                    })
+                .populate('creator', 'fullusername')
+                .populate('group', 'label').exec();
+
+                let tmp = {...(session.toObject())};
+                let tmpQuiz = {...tmp.idquiz};
+                let tmpQuestions = [...tmpQuiz.questions];
+
+                let tmpResponse = tmpQuestions.map(q=>{
+                    let qq={...q};
+                    let tmp=qq.qcxResponse.map(r=>{
+                        delete r.isValid;
+                        return r;
+                    });
+                    delete qq.qcxResponse;
+                    qq.qcxResponse=[...tmp]
+                    return qq;
+                });
+
+                delete tmp.idquiz.questions;
+                tmp.idquiz.questions=[...tmpResponse];
+
+            if (tmp) {
+                return ({
+                    status: "success",
+                    message: "success to get the Quiz Session For Consumer",
+                    payload: tmp
+                })
+            } else {
+                return ({
+                    status: "error",
+                    message: "unabled to get the Quiz Session",
+                    payload: null
+                })
+            }
+        }
+        catch {
+            return ({
+                status: "error",
+                message: "Unable to get the Quiz Session for this Id",
+                payload: error
+            })
+        }
+    }
+}
+
 module.exports = (QuizSession) => {
     return {
         createQuizSession: createQuizSession(QuizSession),
@@ -232,7 +294,8 @@ module.exports = (QuizSession) => {
         closeQuizSession: closeQuizSession(QuizSession),
         getQuizSessionById: getQuizSessionById(QuizSession),
         getQuizSessionsByCreator: getQuizSessionsByCreator(QuizSession),
-        getSessionByCode: getSessionByCode(QuizSession)
+        getSessionByCode: getSessionByCode(QuizSession),
+        getFullSessionById: getFullSessionById(QuizSession)
     }
 }
 
