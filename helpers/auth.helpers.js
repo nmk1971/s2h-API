@@ -28,8 +28,12 @@ function getConsumerToken(student) {
     });
 }
 
+function comparePassword(givenPassword, userPassword) {
+    return bcrypt.compareSync(givenPassword, userPassword)
+}
 
 module.exports={
     getToken:getToken,
-    getConsumerToken:getConsumerToken
+    getConsumerToken:getConsumerToken,
+    comparePassword: comparePassword
 }

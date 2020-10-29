@@ -39,7 +39,7 @@ const authenticate = User => async (email, password) => {
     try {
         const user = await User.findOne({
             email: email
-        }).populate('customer');
+        });
         if (comparePassword(password, user.password)) {
             const token = getToken(user);
             return ({
