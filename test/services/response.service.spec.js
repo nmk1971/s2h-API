@@ -805,7 +805,7 @@ describe.only("Response Service Test suite", () => {
             expect(result).to.contain.property('message');
             expect(result).to.contain.property('payload');
             expect(result.status).to.equal('success');
-            expect(result.message).to.equal('user registred succssfully!!!');
+            expect(result.message).to.equal('Response saved successfully');
            console.log(result)
 
         })

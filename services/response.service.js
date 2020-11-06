@@ -1,31 +1,11 @@
 
 // Save Student Response
 const saveResponse = Response => Session => Question => async actualResponse => {
-    const sessionIsOpen = await isOpen(Session, actualResponse._id);
-    if (sessionIsOpen === false) {
-        return ({
-            status: "error",
-            message: "Sorry, the session was closed",
-            payload: null
-        })
-    }
-
-    let exist = false;
-    if (!actualResponse.isAnonymous) {
-        exist = await isResponseExist(Response, actualResponse);
-    }
-    if (exist) {
-        return ({
-            status: "error",
-            message: "Sorry, you can't respond twice",
-            payload: null
-        })
-    }
 
     let newResponse = new Response(adaptResponse(actualResponse));
     let modifiedResp = await addCorrectResponses(Question, newResponse);
     try {
-        let toSave=new Response(modifiedResp);
+        let toSave = new Response(modifiedResp);
         const save = await toSave.save();
         if (save) {
             return ({
@@ -37,7 +17,7 @@ const saveResponse = Response => Session => Question => async actualResponse => 
     } catch (error) {
         return ({
             status: "error",
-            message: "Unable to add new Quiz",
+            message: "Unable to save your response",
             payload: error
         })
     }
@@ -55,7 +35,7 @@ function adaptResponse(actualResponse) {
     const newResponse = {};
     newResponse.sessionId = actualResponse._id;
     newResponse.studentId = actualResponse.studentId;
-    newResponse.studentFullName = actualResponse.student.firstName + ' ' + actualResponse.student.lastName;
+    newResponse.studentFullName = actualResponse.student.firstname + ' ' + actualResponse.student.lastname;
     newResponse.studentGendeer = actualResponse.student.gender;
     newResponse.isAnonymous = actualResponse.isAnonymous;
     newResponse.createdate = actualResponse.createdate;
@@ -75,34 +55,16 @@ function adaptResponse(actualResponse) {
 
 }
 
-async function isResponseExist(Response, actualResponse) {
-    const exist = await Response.findOne({ $and: [{ sessionId: actualResponse._id }, { studentId: actualResponse.studentId }] })
-    if (exist) {
-        return true
-    }
-    else {
-        return false;
-    }
-}
-
-async function isOpen(Session, sessionId) {
-    const result = await Session.findById(sessionId);
-    if (result && result.isopen === true) {
-        return true;
-    } else {
-        return false;
-    }
-}
 
 async function addCorrectResponses(Question, newResponse) {
     let tmpResp = { ...newResponse.toObject() };
     const correctQuestionResponse = await Question.find({ quizId: newResponse.idquiz });
-    console.log(tmpResp);
-    tmpResp.questions = tmpResp.questions.map( quest => {
+
+    tmpResp.questions = tmpResp.questions.map(quest => {
         correctQuestionResponse.map(elem => {
-            console.log('quest in first map:   ',quest);
+         
             if (elem.id === quest._id) {
-               return quest.qcxCorrectResponse = elem.qcxResponse.toObject();
+                return quest.qcxCorrectResponse = elem.qcxResponse.toObject();
             }
         });
         return quest;
