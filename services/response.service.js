@@ -1,9 +1,10 @@
-
+const {grade,gradeQcx} = require('../helpers/calculate.grade');
 // Save Student Response
 const saveResponse = Response => Session => Question => async actualResponse => {
 
     let newResponse = new Response(adaptResponse(actualResponse));
     let modifiedResp = await addCorrectResponses(Question, newResponse);
+ //   modifiedResp.score = grade(modifiedResp.questions)/modifiedResp.questions.length;
     try {
         let toSave = new Response(modifiedResp);
         const save = await toSave.save();
@@ -71,3 +72,4 @@ async function addCorrectResponses(Question, newResponse) {
     })
     return tmpResp;
 }
+

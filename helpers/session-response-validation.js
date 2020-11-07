@@ -8,8 +8,7 @@ var secretKey = require('../config/credentials').secret_key;
 
 module.exports = {
     validateStudent: async function (req, res, next) {
-        const sessionid = req.body._id;
-        const session = await SessionSchema.findById(sessionid).exec();
+        const session = await SessionSchema.findById(req.body._id).exec();
         if (session.isAnonymous === true) {
             next();
         }
@@ -45,16 +44,16 @@ module.exports = {
     },
 
     isClosedSession: async function (req, res, next) {
-        if (req.body.isopen === false) {
-            res.status(403).json({
+        const session = await SessionSchema.findById(req.body._id).exec();
+        if (session.isopen === false) {
+            return res.status(403).json({
                 status: "error",
                 message: "You try to respond to closed session",
                 payload: null
             });
         }
-
-
-        next();
+            next();
+        
     },
 
     yetAnswred: async function (req, res, next) {

@@ -12,7 +12,7 @@ const ResponseModel =  require('../../db/models/response-schema');
 const QuestionModel =  require('../../db/models/question-schema');
 const ResponseService = require('../../services/response.service')(ResponseModel);
 
-describe.only("Response Service Test suite", () => {
+describe("Response Service Test suite", () => {
     before((done) => {
         db.connect()
             .then(() => {
