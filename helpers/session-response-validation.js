@@ -12,35 +12,36 @@ module.exports = {
         if (session.isAnonymous === true) {
             next();
         }
-
-        await jwt.verify(req.headers['x-access-token'], secretKey, function (err, decoded) {
-            if (err) {
-                res.status(403).json({
-                    status: "error",
-                    message: err.message,
-                    payload: null
-                });
-            } else {
-
-                req.body.logged = {
-                    studentid: decoded.id,
-                    loginname: decoded.loginname,
-                    gender: decoded.gender,
-                    group: decoded.group
-                }
-                const storedGroupId = session.group._id.toString();
-                if (storedGroupId === decoded.group) {
-                    next();
-                } else {
+        else {
+            await jwt.verify(req.headers['x-access-token'], secretKey, function (err, decoded) {
+                if (err) {
                     res.status(403).json({
                         status: "error",
-                        message: "You are not allowed to this session",
+                        message: err.message,
                         payload: null
                     });
-                }
+                } else {
 
-            }
-        });
+                    req.body.logged = {
+                        studentid: decoded.id,
+                        loginname: decoded.loginname,
+                        gender: decoded.gender,
+                        group: decoded.group
+                    }
+                    const storedGroupId = session.group._id.toString();
+                    if (storedGroupId === decoded.group) {
+                        next();
+                    } else {
+                        res.status(403).json({
+                            status: "error",
+                            message: "You are not allowed to this session",
+                            payload: null
+                        });
+                    }
+
+                }
+            });
+        }
     },
 
     isClosedSession: async function (req, res, next) {
@@ -52,23 +53,27 @@ module.exports = {
                 payload: null
             });
         }
-            next();
-        
+        next();
+
     },
 
     yetAnswred: async function (req, res, next) {
-        const exist = await Response.findOne({ $and: [{ sessionId: req.body._id }, { studentId: req.body.logged.studentid }] })
-        if (exist) {
-            res.status(403).json({
-                status: "error",
-                message: "You can not respond twice :(",
-                payload: null
-            })
+        const session = await SessionSchema.findById(req.body._id).exec();
+        if (session.isAnonymous === true) {
+               next();
+        } else {
+            const exist = await Response.findOne({ $and: [{ sessionId: req.body._id }, { studentId: req.body.logged.studentid }] })
+            if (exist) {
+                res.status(403).json({
+                    status: "error",
+                    message: "You can not respond twice :(",
+                    payload: null
+                })
+            }
+            else {
+                next();
+            }
         }
-        else {
-           next();
-        }
-        
     }
 
 

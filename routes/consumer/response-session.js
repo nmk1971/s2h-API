@@ -38,11 +38,11 @@ router.get('/session/:sessionId', async function (req, res, next) {
 });
 
 
-router.post('/session/finalresponse', [
-  validations.isClosedSession,
+router.post('/session/finalresponse', 
   validations.validateStudent,
-  validations.yetAnswred
-], async function (req, res, next) {
+  validations.yetAnswred,
+  validations.isClosedSession
+  , async function (req, res, next) {
   const sessionResponse = { ...req.body };
   try {
     let s_response = await ResponseService.saveResponse(SessionModel)(QuestionModel)(sessionResponse);

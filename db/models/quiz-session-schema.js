@@ -27,6 +27,12 @@ const QuizSessionSchema = new Schema({
         required: true,
         default: true
     },
+    
+    returnCorrectResponse: {
+        type: Boolean,
+        required: true,
+        default: true
+    },
 
     group: {
         type: Schema.Types.ObjectId,

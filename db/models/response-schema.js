@@ -1,4 +1,4 @@
-const { string } = require('joi');
+const { string, number } = require('joi');
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -17,7 +17,13 @@ const ResponseSchema = new Schema({
     studentGender: {
         type: String
     },
+   
     isAnonymous: {
+        type: Boolean,
+        required: true
+    }, 
+    
+    returnCorrectResponse: {
         type: Boolean,
         required: true
     },
@@ -56,7 +62,8 @@ const ResponseSchema = new Schema({
     },
     questions: [],
     responseDateTime: Date,
-    startdate: Date
+    startdate: Date,
+    score: Number
 })
 
 module.exports = mongoose.model('Response', ResponseSchema);
