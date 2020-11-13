@@ -10,10 +10,15 @@ const saveResponse = Response => Session => Question => async actualResponse => 
         const save = await toSave.save();
         if (save) {
             if (save.returnCorrectResponse === false) {
+                let correctResponsesNumber = save.questions.filter(quest => quest.isCorrect === true).length;
                 return ({
                     status: "success",
                     message: "Response saved successfully",
-                    payload: save.score
+                    payload: {
+                        correctResponsesNumber: correctResponsesNumber,
+                        totalResponsesNumber: save.questions.length,
+                        score: save.score
+                    }
                 })
             } else {
                 return ({
