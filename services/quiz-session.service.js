@@ -1,5 +1,6 @@
 const Group = require('../db/models/quiz-schema');
 const Student = require('../db/models/student-schema');
+const Response = require('../db/models/response-schema');
 
 /*
 * Create new Session for a given Quiz whith isOpen = false
@@ -117,7 +118,7 @@ const getQuizSessionById = QuizSession => async (id) => {
         })
     } else {
         try {
-            let quizSession = await QuizSession.findById(id)
+            let quizSession = await QuizSession.findById(id).lean()
                 .populate('idquiz')
                 .populate({
                     path: 'group',
@@ -127,6 +128,17 @@ const getQuizSessionById = QuizSession => async (id) => {
                         })
                 });
             if (quizSession) {
+                if (quizSession.isAnonymous === false) {
+                    let responses = await Response.find({ sessionId: id }, 'studentId');
+                    quizSession.group.students = quizSession.group.students.map(student => {
+                        if (responses.filter(resp => resp.studentId.toString()==student._id.toString()).length>0){
+                            student.hasResponded = true;
+                        }else{
+                            student.hasResponded = false;
+                        }
+                        return student;
+                    })
+                }
                 return ({
                     status: "success",
                     message: "success to get the Quiz Session",
@@ -245,23 +257,23 @@ const getFullSessionById = QuizSession => async (id) => {
                 .populate('creator', 'fullusername')
                 .populate('group', 'label').exec();
 
-                let tmp = {...(session.toObject())};
-                let tmpQuiz = {...tmp.idquiz};
-                let tmpQuestions = [...tmpQuiz.questions];
+            let tmp = { ...(session.toObject()) };
+            let tmpQuiz = { ...tmp.idquiz };
+            let tmpQuestions = [...tmpQuiz.questions];
 
-                let tmpResponse = tmpQuestions.map(q=>{
-                    let qq={...q};
-                    let tmp=qq.qcxResponse.map(r=>{
-                        delete r.isValid;
-                        return r;
-                    });
-                    delete qq.qcxResponse;
-                    qq.qcxResponse=[...tmp]
-                    return qq;
+            let tmpResponse = tmpQuestions.map(q => {
+                let qq = { ...q };
+                let tmp = qq.qcxResponse.map(r => {
+                    delete r.isValid;
+                    return r;
                 });
+                delete qq.qcxResponse;
+                qq.qcxResponse = [...tmp]
+                return qq;
+            });
 
-                delete tmp.idquiz.questions;
-                tmp.idquiz.questions=[...tmpResponse];
+            delete tmp.idquiz.questions;
+            tmp.idquiz.questions = [...tmpResponse];
 
             if (tmp) {
                 return ({

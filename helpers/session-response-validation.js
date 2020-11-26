@@ -9,38 +9,46 @@ var secretKey = require('../config/credentials').secret_key;
 module.exports = {
     validateStudent: async function (req, res, next) {
         const session = await SessionSchema.findById(req.body._id).exec();
-        if (session.isAnonymous === true) {
-            next();
-        }
-        else {
-            await jwt.verify(req.headers['x-access-token'], secretKey, function (err, decoded) {
-                if (err) {
-                    res.status(403).json({
-                        status: "error",
-                        message: err.message,
-                        payload: null
-                    });
-                } else {
-
-                    req.body.logged = {
-                        studentid: decoded.id,
-                        loginname: decoded.loginname,
-                        gender: decoded.gender,
-                        group: decoded.group
-                    }
-                    const storedGroupId = session.group._id.toString();
-                    if (storedGroupId === decoded.group) {
-                        next();
-                    } else {
+        if (session === null) {
+            res.status(403).json({
+                status: "error",
+                message: "Cannot Save empty test",
+                payload: null
+            });
+        } else {
+            if (session.isAnonymous === true) {
+                next();
+            }
+            else {
+                await jwt.verify(req.headers['x-access-token'], secretKey, function (err, decoded) {
+                    if (err) {
                         res.status(403).json({
                             status: "error",
-                            message: "You are not allowed to this session",
+                            message: err.message,
                             payload: null
                         });
-                    }
+                    } else {
 
-                }
-            });
+                        req.body.logged = {
+                            studentid: decoded.id,
+                            loginname: decoded.loginname,
+                            gender: decoded.gender,
+                            group: decoded.group
+                        }
+                        const storedGroupId = session.group._id.toString();
+                        if (storedGroupId === decoded.group) {
+                            next();
+                        } else {
+                            res.status(403).json({
+                                status: "error",
+                                message: "You are not allowed to this session",
+                                payload: null
+                            });
+                        }
+
+                    }
+                });
+            }
         }
     },
 
@@ -60,7 +68,7 @@ module.exports = {
     yetAnswred: async function (req, res, next) {
         const session = await SessionSchema.findById(req.body._id).exec();
         if (session.isAnonymous === true) {
-               next();
+            next();
         } else {
             const exist = await Response.findOne({ $and: [{ sessionId: req.body._id }, { studentId: req.body.logged.studentid }] })
             if (exist) {
