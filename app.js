@@ -14,7 +14,7 @@ const groupsRouter = require('./routes/group');
 const studentsRouter = require('./routes/student');
 const responseRouter = require('./routes/consumer/response-session');
 const consumerRouter = require('./routes/consumer/student-as-consumer');
-
+const statRoutrer = require('./routes/statistic');
 
 const app = express();
 app.use(cors());
@@ -35,6 +35,7 @@ app.use('/api/v1/groups',groupsRouter);
 app.use('/api/v1/students',studentsRouter);
 app.use('/api/v1/response',responseRouter);
 app.use('/api/v1/response/student',consumerRouter);
+app.use('/api/v1/statistics',statRoutrer);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // New line
