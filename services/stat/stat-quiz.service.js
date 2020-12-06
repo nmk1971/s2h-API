@@ -11,7 +11,7 @@ const getQuizzesByCreatorCount = Quiz => async (creatorId) => {
     else{
        try {
            let count = await utils.countDocumentsByCreator(Quiz, creatorId);
-            if (count){
+            if (count!==undefined){
                 return ({
                     status: "success",
                     message: "get all Quizzes Count successfully",
@@ -32,7 +32,7 @@ const getQuizzesByCreatorCount = Quiz => async (creatorId) => {
 const getAllQuizzesCount = Quiz => async () => {
        try {
            let count = await utils.countAllDocuments(Quiz);
-            if (count){
+            if (count!==undefined){
                 return ({
                     status: "success",
                     message: "get all Quizzes Count successfully",

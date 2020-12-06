@@ -3,9 +3,10 @@
 */
 async function countAllDocuments(Model) {
     let cpt = 0;
-    await Model.countDocuments({}, (err, count) => {
+  /*  await Model.countDocuments({}, (err, count) => {
         cpt = count;
-    });
+    });*/
+    cpt = await Model.find({}).count();
     return cpt;
 }
 
@@ -14,9 +15,10 @@ async function countAllDocuments(Model) {
 */
 async function countDocumentsByCreator(Model, creatorId) {
     let cpt = 0;
-    await Model.countDocuments({creator : creatorId}, (err, count) => {
+ /*   await Model.countDocuments({creator : creatorId}, (err, count) => {
         cpt = count;
-    });
+    });*/
+    cpt = await Model.find({creator : creatorId}).count();
     return cpt;
 }
 

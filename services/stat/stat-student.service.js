@@ -11,7 +11,7 @@ const getStudentsByCreatorCount = Student => async (creatorId) => {
     else {
         try {
             let count = await utils.countDocumentsByCreator(Student, creatorId);
-            if (count) {
+            if (count!==undefined) {
                 return ({
                     status: "success",
                     message: "get all Students Count successfully",
@@ -33,7 +33,7 @@ const getAllStudentsCount = Student => async () => {
 
     try {
         let count = await utils.countAllDocuments(Student);
-        if (count) {
+        if (count!==undefined) {
             return ({
                 status: "success",
                 message: "get all Students Count successfully",

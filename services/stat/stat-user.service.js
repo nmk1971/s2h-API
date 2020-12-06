@@ -4,7 +4,7 @@ const getCreatorsCount = User => async () => {
 
         try {
             let count = await utils.countAllDocuments(User);
-            if (count) {
+            if (count!==undefined) {
                 return ({
                     status: "success",
                     message: "get creators Count successfully",

@@ -11,7 +11,7 @@ const getSessionsByCreatorCount = Session => async (creatorId) => {
     else {
         try {
             let count = await utils.countDocumentsByCreator(Session, creatorId);
-            if (count) {
+            if (count!==undefined) {
                 return ({
                     status: "success",
                     message: "get all Sessions Count successfully",
@@ -33,7 +33,7 @@ const getAllSessionsCount = Session => async () => {
 
     try {
         let count = await utils.countAllDocuments(Session);
-            if (count) {
+            if (count!==undefined) {
             return ({
                 status: "success",
                 message: "get all Sessions Count successfully",
