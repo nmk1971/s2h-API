@@ -9,7 +9,16 @@ const saveResponse = Response => Session => Question => async actualResponse => 
         let toSave = new Response(modifiedResp);
         const save = await toSave.save();
         if (save) {
-            if (save.returnCorrectResponse === false) {
+            if (save.evaluationType === 'Sondage'){
+                return ({
+                    status: "success",
+                    message: "Survey Response saved successfully",
+                    payload: {
+                        message: "Merci pour votre collaboration"
+                    }
+                });
+            }
+            else  if (save.returnCorrectResponse === false) {
                 let correctResponsesNumber = save.questions.filter(quest => quest.isCorrect === true).length;
                 return ({
                     status: "success",
@@ -19,8 +28,10 @@ const saveResponse = Response => Session => Question => async actualResponse => 
                         totalResponsesNumber: save.questions.length,
                         score: save.score
                     }
-                })
-            } else {
+                });
+            }
+            
+            else {
                 return ({
                     status: "success",
                     message: "Response saved successfully",
